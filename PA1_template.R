@@ -1,5 +1,9 @@
 
 ## ----loaddata------------------------------------------------------------
+## --- Setup the Working Directory ----------------------------------------
+setwd("D:/cpinilla/Datascience/REPRODUCIBLE/RepData1/RepData_PeerAssessment1")
+library(ggplot2)
+## ----loaddata---
 unzip(zipfile="activity.zip")
 data <- read.csv("activity.csv")
 
@@ -8,6 +12,7 @@ data <- read.csv("activity.csv")
 library(ggplot2)
 total.steps <- tapply(data$steps, data$date, FUN=sum, na.rm=TRUE)
 qplot(total.steps, binwidth=1000, xlab="total number of steps taken each day")
+hist(total.steps, breaks=30, xlab="total number of steps taken each day")
 mean(total.steps, na.rm=TRUE)
 median(total.steps, na.rm=TRUE)
 
@@ -49,6 +54,7 @@ filled.data$steps <- mapply(fill.value, filled.data$steps, filled.data$interval)
 ## ------------------------------------------------------------------------
 total.steps <- tapply(filled.data$steps, filled.data$date, FUN=sum)
 qplot(total.steps, binwidth=1000, xlab="total number of steps taken each day")
+hist(total.steps, breaks=30, xlab="total number of steps taken each day")
 mean(total.steps)
 median(total.steps)
 
@@ -56,12 +62,12 @@ median(total.steps)
 ## ------------------------------------------------------------------------
 weekday.or.weekend <- function(date) {
     day <- weekdays(date)
-    if (day %in% c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"))
+    if (day %in% c("lunes", "martes", "miércoles", "jueves", "viernes"))
         return("weekday")
-    else if (day %in% c("Saturday", "Sunday"))
+    else if (day %in% c("sábado", "domingo"))
         return("weekend")
     else
-        stop("invalid date")
+        return("invalid date")
 }
 filled.data$date <- as.Date(filled.data$date)
 filled.data$day <- sapply(filled.data$date, FUN=weekday.or.weekend)
